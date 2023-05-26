@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  bffTemplateMysql:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bff_template_mysql
+    env_file: .env
+    container_name: bffTemplateMysqlAdapter
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
+  db:
+    image: mysql
+    container_name: bffTemplateMysql
+    restart: always
+    env_file: .env
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./dataDb:/home/sql/app/
+      
+    environment:
+      PORT: ${DB_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}

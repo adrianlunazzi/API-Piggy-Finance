@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    container_name: ${IMAGE_NAME}
+    restart: always
+    env_file: .env
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./dataDb:/home/sql/app/
+      
+    environment:
+      PORT: ${DB_PORT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
