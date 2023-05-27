@@ -1,1 +1,2 @@
-export { Demo } from "./demo.models";
+export { User } from './user.models';
+export { Demo } from './demo.models';

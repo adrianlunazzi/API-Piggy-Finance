@@ -1,2 +1,2 @@
-export { Demo } from "./demo.entities";
-
+export { User } from './user.entities';
+export { Demo } from './demo.entities';
