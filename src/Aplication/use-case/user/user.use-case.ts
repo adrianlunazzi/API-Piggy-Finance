@@ -3,6 +3,7 @@ import { CreateUserDto, UpdateUserDto } from 'src/Aplication/dto';
 import { BaseDataServices } from 'src/Domain/base/data-service.base';
 import { User } from 'src/Domain/entities';
 import { UserFactoryService } from './user-factory.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserUseCases {
@@ -26,7 +27,19 @@ export class UserUseCases {
   }
 
   async create(createUserDto: CreateUserDto) {
-    let user = this.userFactoryService.createNewUser(createUserDto);
+    const { email, password } = createUserDto;
+    const dbMail = await this.dataServices.user.get({
+      where: { email },
+    });
+    if (dbMail)
+      throw new NotFoundException(
+        'there is already a user with the email entered',
+      );
+
+    let user = this.userFactoryService.createNewUser({
+      ...createUserDto,
+      password: await bcrypt.hash(password, 10),
+    });
     return await this.dataServices.user.create(user);
   }
 
